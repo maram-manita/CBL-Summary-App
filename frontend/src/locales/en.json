@@ -12,11 +12,6 @@
   "load_error_message": "Failed to load the file. Please try again.",
   "loading_summary_message": "Summarizing the text...",
   "summary_success_message": "Report summarized successfully.",
-  "summary_error_message": "Error fetching summary",
   "logout": "log out",
-  "no_pdf_selected": "No PDF selected",
-  "username": "Username",
-  "password": "Password",
-  "login": "Login",
-  "sign_in": "Sign in"
+  "no_pdf_selected": "No PDF selected"
 }
