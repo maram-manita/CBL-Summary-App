@@ -1,64 +1,99 @@
-// NavBar.js
-import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, Select, MenuItem } from "@mui/material";
-import ReactCountryFlag from "react-country-flag";
+import React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Divider,
+  Box,
+} from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-
-const LanguageSelector = ({ currentLanguage, onLanguageChange }) => {
-  return (
-    <Select
-      value={currentLanguage}
-      onChange={(e) => onLanguageChange(e.target.value)}
-      displayEmpty
-      style={{ color: "white", marginLeft: "1rem" }} // Styling for better contrast
-    >
-      <MenuItem value="en">
-        <ReactCountryFlag
-          countryCode="US"
-          svg
-          style={{ width: "1.5em", height: "1.5em", marginRight: "0.5em" }}
-          title="US"
-        />
-        English
-      </MenuItem>
-      <MenuItem value="ar">
-        <ReactCountryFlag
-          countryCode="LY"
-          svg
-          style={{ width: "1.5em", height: "1.5em", marginRight: "0.5em" }}
-          title="LY"
-        />
-        العربية
-      </MenuItem>
-    </Select>
-  );
-};
-
+import { HiOutlineGlobeAlt } from "react-icons/hi";
+import "../App.css";
 const Navbar = () => {
-  const { i18n, t } = useTranslation(); // `t` can be used for translations if needed
-  const [language, setLanguage] = useState(i18n.language || "en"); // Initialize with the current i18n language
+  const { i18n, t } = useTranslation();
+  const [language, setLanguage] = React.useState(i18n.language || "en");
 
-  const handleLanguageChange = (lang) => {
-    setLanguage(lang); // Update state
-    i18n.changeLanguage(lang); // Change the language in i18n
+  // Handle language change
+  const toggleLanguage = () => {
+    const newLanguage = language === "en" ? "ar" : "en";
+    setLanguage(newLanguage);
+    i18n.changeLanguage(newLanguage);
+    document.dir = newLanguage === "ar" ? "rtl" : "ltr"; // Adjust document direction
   };
 
+  // Create a theme with dynamic direction
+  const theme = createTheme({
+    direction: language === "ar" ? "rtl" : "ltr",
+  });
+
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
-          <img
-            src="/src/assets/logo3.png" // Ensure the path to the logo is correct
-            alt="Logo"
-            style={{ height: 40 }}
-          />
-        </Typography>
-        <LanguageSelector
-          currentLanguage={language}
-          onLanguageChange={handleLanguageChange}
-        />
-      </Toolbar>
-    </AppBar>
+    <ThemeProvider theme={theme}>
+      <AppBar
+        position="static"
+        elevation={0}
+        sx={{
+          backgroundColor: "#262626",
+          boxShadow: "none",
+          padding: "16px 8px",
+        }}
+      >
+        <Toolbar>
+          {/* Logo */}
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            <img src="src/assets/logo2.png" alt="Logo" style={{ height: 40 }} />
+          </Typography>
+
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-end"
+            gap={2}
+          >
+            <Button
+              onClick={toggleLanguage}
+              sx={{
+                color: "white",
+                border: "1px solid white",
+                padding: "4px 12px",
+                borderRadius: 8,
+                fontWeight: "bold",
+              }}
+            >
+              <HiOutlineGlobeAlt style={{ margin: "0px 4px" }} />
+
+              {language === "en" ? "العربية" : "English"}
+            </Button>
+            {/* <Divider
+              orientation="vertical"
+              flexItem
+              sx={{
+                backgroundColor: "#818181",
+                margin: "0 16px",
+                height: "30px",
+              }}
+            /> */}
+            <Button
+              sx={{
+                color: "#262626",
+                border: "1px solid white",
+                padding: "4px 12px",
+                borderRadius: 8,
+                backgroundColor: "white",
+                fontWeight: "bold",
+              }}
+              onClick={() => {
+                console.log("Logout clicked");
+                // Implement your logout logic here
+              }}
+            >
+              Log Out
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </ThemeProvider>
   );
 };
 

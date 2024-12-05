@@ -1,8 +1,9 @@
 {
   "page_title": "تقارير مصرف ليبيا المركزي - أداة التلخيص",
   "reports_label": "الملفات المتاحة",
-  "report_type_label": "اختر نوع التقرير",
-  "year_label": "اختر السنة",
+  "report_type_label": "نوع التقرير",
+  "year_label": "السنة",
+  "all": "عرض الكل",
   "view_button_text": "عرض",
   "summarize_button_text": "تلخيص النص",
   "summary_label": "الملخص",

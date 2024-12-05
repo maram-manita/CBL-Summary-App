@@ -14,6 +14,7 @@ import { Box } from "@mui/system";
 import Navbar from "./components/Navbar";
 import { useTranslation } from "react-i18next";
 import "./App.css";
+import ReportsGrid from "./components/ReportsGrid";
 
 const App = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -72,24 +73,26 @@ const App = () => {
       }}
     >
       <Navbar />
-
       <Box p={2}>
-        <Typography variant="h4">{t("page_title")}</Typography>
+        <Typography
+          sx={{ fontSize: "44px", fontWeight: "bold", marginTop: "20px" }}
+        >
+          {t("page_title")}
+        </Typography>
       </Box>
 
-      {/* Row 3: Filters */}
-
       <Grid container spacing={2} p={2}>
-        {/* Report Type Filter */}
         <Grid item size={6}>
-          <Typography variant="subtitle1">Report Type</Typography>
+          <Typography variant="subtitle1" sx={{ marginBottom: "2px" }}>
+            {t("report_type_label")}
+          </Typography>
           <Select
             fullWidth
             value={filters.reportType}
             onChange={(e) => handleFilterChange("reportType", e.target.value)}
             displayEmpty
           >
-            <MenuItem value="">All Report Types</MenuItem>
+            <MenuItem value="">{t("all")}</MenuItem>
             {[...new Set(data.map((row) => row.report_type))].map((type) => (
               <MenuItem key={type} value={type}>
                 {type}
@@ -100,7 +103,9 @@ const App = () => {
 
         {/* Year Filter */}
         <Grid item size={6}>
-          <Typography variant="subtitle1">Year</Typography>
+          <Typography variant="subtitle1" sx={{ marginBottom: "2px" }}>
+            {t("year_label")}
+          </Typography>
           <Select
             fullWidth
             value={filters.year}
@@ -108,7 +113,7 @@ const App = () => {
             displayEmpty
             disabled={!filters.reportType && !data.length} // Disable if no data or no report type selected
           >
-            <MenuItem value="">All Years</MenuItem>
+            <MenuItem value="">{t("all")}</MenuItem>
             {[
               ...new Set(
                 data
@@ -132,45 +137,12 @@ const App = () => {
 
       {/* Row 4: File List */}
       <Box p={2}>
-        <Paper>
-          <DataGrid
-            rows={filteredData.map((row, index) => ({
-              id: index + 1,
-              name: row.name,
-              pdfPath: row.pdf_path,
-              mdPath: row.md_path,
-            }))}
-            columns={[
-              {
-                field: "select",
-                headerName: "",
-                width: 50,
-                renderCell: (params) => (
-                  <Checkbox
-                    checked={selectedFiles.includes(params.row.id)}
-                    onChange={() => handleFileSelection(params.row.id)}
-                  />
-                ),
-              },
-              { field: "name", headerName: "File Name", flex: 1 },
-              {
-                field: "actions",
-                headerName: "Actions",
-                width: 150,
-                renderCell: (params) => (
-                  <Button
-                    variant="contained"
-                    onClick={() => handleViewPdf(params.row.pdfPath)}
-                  >
-                    View PDF
-                  </Button>
-                ),
-              },
-            ]}
-            pageSize={5}
-            rowsPerPageOptions={[5, 10, 20]}
-          />
-        </Paper>
+        <ReportsGrid
+          filteredData={filteredData}
+          selectedFiles={selectedFiles}
+          handleFileSelection={handleFileSelection}
+          handleViewPdf={handleViewPdf}
+        />
       </Box>
 
       <Grid container spacing={2} p={2}>

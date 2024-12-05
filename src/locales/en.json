@@ -1,8 +1,9 @@
 {
   "page_title": "Central Bank of Libya Reports - Summarization Tool",
   "reports_label": "Available Files",
-  "report_type_label": "Select Report Type",
-  "year_label": "Select Year",
+  "report_type_label": "Report Type",
+  "year_label": "Year",
+  "all": "All",
   "view_button_text": "View",
   "summarize_button_text": "Summarize Text",
   "summary_label": "Summary",
