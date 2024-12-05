@@ -11,6 +11,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { HiOutlineGlobeAlt } from "react-icons/hi";
 import "../App.css";
+
 const Navbar = () => {
   const { i18n, t } = useTranslation();
   const [language, setLanguage] = React.useState(i18n.language || "en");
@@ -36,7 +37,7 @@ const Navbar = () => {
         sx={{
           backgroundColor: "#262626",
           boxShadow: "none",
-          padding: "16px 8px",
+          padding: "8px",
         }}
       >
         <Toolbar>
@@ -88,7 +89,7 @@ const Navbar = () => {
                 // Implement your logout logic here
               }}
             >
-              Log Out
+              {t("logout")}
             </Button>
           </Box>
         </Toolbar>

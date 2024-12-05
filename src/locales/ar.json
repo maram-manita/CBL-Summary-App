@@ -11,5 +11,7 @@
   "no_files_warning": "لا يوجد ملفات متاحة لهذا النوع والسنة.",
   "load_error_message": "تعذر تحميل الملف. يرجى المحاولة مرة أخرى.",
   "loading_summary_message": "جاري تلخيص النص...",
-  "summary_success_message": "تم تلخيص التقرير بنجاح."
+  "summary_success_message": "تم تلخيص التقرير بنجاح.",
+  "logout": "تسجيل الخروج",
+  "no_pdf_selected": "يرجى اختيار مستند"
 }

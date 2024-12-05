@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   Typography,
   Button,
@@ -8,13 +7,17 @@ import {
   Grid2 as Grid,
   Paper,
   Checkbox,
+  Box,
+  Card,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { Box } from "@mui/system";
+
 import Navbar from "./components/Navbar";
 import { useTranslation } from "react-i18next";
 import "./App.css";
 import ReportsGrid from "./components/ReportsGrid";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import i18n from "./i18n";
 
 const App = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -23,6 +26,7 @@ const App = () => {
   const [data, setData] = useState([]); // Holds the CSV data
   const [filters, setFilters] = useState({ reportType: "", year: "" });
   const { t } = useTranslation();
+
   const fetchData = async () => {
     try {
       const response = await fetch("reports.json");
@@ -38,8 +42,17 @@ const App = () => {
 
   useEffect(() => {
     fetchData();
-    console.log(data);
   }, []);
+
+  // Set theme based on language
+  const theme = createTheme({
+    direction: i18n.language === "ar" ? "rtl" : "ltr",
+  });
+
+  // Update document direction when language changes
+  useEffect(() => {
+    document.dir = i18n.language === "ar" ? "rtl" : "ltr";
+  }, [i18n.language]);
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -64,119 +77,139 @@ const App = () => {
   };
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-      }}
-    >
-      <Navbar />
-      <Box p={2}>
-        <Typography
-          sx={{ fontSize: "44px", fontWeight: "bold", marginTop: "20px" }}
-        >
-          {t("page_title")}
-        </Typography>
-      </Box>
-
-      <Grid container spacing={2} p={2}>
-        <Grid item size={6}>
-          <Typography variant="subtitle1" sx={{ marginBottom: "2px" }}>
-            {t("report_type_label")}
-          </Typography>
-          <Select
-            fullWidth
-            value={filters.reportType}
-            onChange={(e) => handleFilterChange("reportType", e.target.value)}
-            displayEmpty
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        <Navbar />
+        <Box p={2}>
+          <Typography
+            sx={{ fontSize: "44px", fontWeight: "bold", marginTop: "20px" }}
           >
-            <MenuItem value="">{t("all")}</MenuItem>
-            {[...new Set(data.map((row) => row.report_type))].map((type) => (
-              <MenuItem key={type} value={type}>
-                {type}
-              </MenuItem>
-            ))}
-          </Select>
-        </Grid>
-
-        {/* Year Filter */}
-        <Grid item size={6}>
-          <Typography variant="subtitle1" sx={{ marginBottom: "2px" }}>
-            {t("year_label")}
+            {t("page_title")}
           </Typography>
-          <Select
-            fullWidth
-            value={filters.year}
-            onChange={(e) => handleFilterChange("year", e.target.value)}
-            displayEmpty
-            disabled={!filters.reportType && !data.length} // Disable if no data or no report type selected
-          >
-            <MenuItem value="">{t("all")}</MenuItem>
-            {[
-              ...new Set(
-                data
-                  .filter((row) =>
-                    filters.reportType
-                      ? row.report_type === filters.reportType
-                      : true
-                  )
-                  .map((row) => row.year)
-              ),
-            ]
-              .sort((a, b) => a - b) // Sort years in ascending order
-              .map((year) => (
-                <MenuItem key={year} value={year}>
-                  {year}
+        </Box>
+
+        <Grid container spacing={2} p={2}>
+          <Grid item size={6}>
+            <Typography variant="subtitle1" sx={{ marginBottom: "2px" }}>
+              {t("report_type_label")}
+            </Typography>
+            <Select
+              fullWidth
+              value={filters.reportType}
+              onChange={(e) => handleFilterChange("reportType", e.target.value)}
+              displayEmpty
+            >
+              <MenuItem value="">{t("all")}</MenuItem>
+              {[...new Set(data.map((row) => row.report_type))].map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
                 </MenuItem>
               ))}
-          </Select>
-        </Grid>
-      </Grid>
+            </Select>
+          </Grid>
 
-      {/* Row 4: File List */}
-      <Box p={2}>
-        <ReportsGrid
-          filteredData={filteredData}
-          selectedFiles={selectedFiles}
-          handleFileSelection={handleFileSelection}
-          handleViewPdf={handleViewPdf}
-        />
-      </Box>
-
-      <Grid container spacing={2} p={2}>
-        <Grid item size={6}>
-          <Paper style={{ padding: 16, height: "100%" }}>
-            <Typography variant="h6">Summary</Typography>
-            <Button
-              variant="contained"
-              disabled={selectedFiles.length === 0}
-              style={{ marginTop: 16 }}
+          {/* Year Filter */}
+          <Grid item size={6}>
+            <Typography variant="subtitle1" sx={{ marginBottom: "2px" }}>
+              {t("year_label")}
+            </Typography>
+            <Select
+              fullWidth
+              value={filters.year}
+              onChange={(e) => handleFilterChange("year", e.target.value)}
+              displayEmpty
+              disabled={!filters.reportType && !data.length} // Disable if no data or no report type selected
             >
-              Generate Summary
-            </Button>
-          </Paper>
+              <MenuItem value="">{t("all")}</MenuItem>
+              {[
+                ...new Set(
+                  data
+                    .filter((row) =>
+                      filters.reportType
+                        ? row.report_type === filters.reportType
+                        : true
+                    )
+                    .map((row) => row.year)
+                ),
+              ]
+                .sort((a, b) => a - b) // Sort years in ascending order
+                .map((year) => (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
+                ))}
+            </Select>
+          </Grid>
         </Grid>
 
-        {/* Right Column: PDF Viewer */}
-        <Grid item size={6}>
-          <Paper style={{ padding: 16, height: "100%" }}>
-            <Typography variant="h6">PDF Viewer</Typography>
-            {selectedPdf ? (
-              <iframe
-                src={selectedPdf}
-                style={{ width: "100%", height: 400 }}
-              />
-            ) : (
-              <Typography variant="body1" style={{ marginTop: 16 }}>
-                No PDF selected
+        {/* Row 4: File List */}
+        <Box p={2}>
+          <ReportsGrid
+            filteredData={filteredData}
+            selectedFiles={selectedFiles}
+            handleFileSelection={handleFileSelection}
+            handleViewPdf={handleViewPdf}
+          />
+        </Box>
+
+        <Grid container spacing={2} p={2}>
+          <Grid item size={6}>
+            <Card variant="outlined" style={{ padding: 16, height: "100%" }}>
+              <Typography sx={{ fontSize: "28px", fontWeight: "bold" }}>
+                {t("summary_label")}
               </Typography>
-            )}
-          </Paper>
+              <Button
+                disabled={selectedFiles.length === 0}
+                style={{ marginTop: 16 }}
+                sx={{
+                  backgroundColor: "#2683e8",
+                  padding: "8px 12px",
+                  borderRadius: 2,
+                  color: "white",
+                  fontWeight: "bold",
+                  "&.Mui-disabled": {
+                    backgroundColor: "#E0E0E0",
+                    color: "#B1ACA6",
+                  },
+                }}
+              >
+                {t("summarize_button_text")}
+              </Button>
+            </Card>
+          </Grid>
+
+          {/* Right Column: PDF Viewer */}
+          <Grid item size={6}>
+            <Card variant="outlined" style={{ padding: 16, height: "100%" }}>
+              <Typography sx={{ fontSize: "28px", fontWeight: "bold" }}>
+                {t("file_display_label")}
+              </Typography>
+              {selectedPdf ? (
+                <iframe
+                  src={selectedPdf}
+                  style={{ width: "100%", height: 400, marginTop: 16 }}
+                />
+              ) : (
+                <Typography
+                  variant="body1"
+                  style={{ marginTop: 16, fontStyle: "italic" }}
+                >
+                  {t("no_pdf_selected")}
+                </Typography>
+              )}
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </ThemeProvider>
   );
 };
 

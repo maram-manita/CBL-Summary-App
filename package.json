@@ -15,6 +15,7 @@
     "@mui/icons-material": "^6.1.9",
     "@mui/material": "^6.1.9",
     "@mui/x-data-grid": "^7.23.0",
+    "@mui/x-data-grid-pro": "^7.23.1",
     "axios": "^1.7.8",
     "i18next": "^24.0.5",
     "i18next-browser-languagedetector": "^8.0.0",
