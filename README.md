@@ -28,7 +28,7 @@ The Report Summarizer App is a web-based AI summary application that allows user
 ### Steps to Install
 1. Clone this repository to your local machine:
    ```bash
-   git clone [<repository_url>](https://github.com/maram-manita/CBL-Summary-App/)
+   git clone https://github.com/maram-manita/CBL-Summary-App
    ```
 
 2. Navigate to the Reports folder (wherever you have it stored):
@@ -37,13 +37,11 @@ The Report Summarizer App is a web-based AI summary application that allows user
    ```
 
 3. Install dependencies (first time only, may have to re-run if more dependencies are add):
-   - Using npm:
      ```bash
      npm install .
      ```
 
 4. Run the app:
-   - Using npm:
      ```bash
      npm run dev
      ```
