@@ -12,6 +12,7 @@
   "load_error_message": "تعذر تحميل الملف. يرجى المحاولة مرة أخرى.",
   "loading_summary_message": "جاري تلخيص النص...",
   "summary_success_message": "تم تلخيص التقرير بنجاح.",
+  "summary_error_message": "حدث خطأ في التلخيص",
   "logout": "تسجيل الخروج",
   "no_pdf_selected": "يرجى اختيار مستند"
 }
