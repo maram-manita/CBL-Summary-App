@@ -1,0 +1,8 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "Tajawal", sans-serif !important;
+  }
+  .MuiDataGrid-scrollbar {
+    overflow-y: hidden !important;
+  }
