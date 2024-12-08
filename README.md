@@ -1,1 +1,1 @@
-"#CBL Summary App" 
+CBL Summary App
