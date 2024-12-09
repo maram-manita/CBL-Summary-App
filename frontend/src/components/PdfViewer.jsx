@@ -14,7 +14,12 @@ const PdfViewer = ({ selectedPdf }) => {
         {selectedPdf ? (
           <iframe
             src={selectedPdf}
-            style={{ width: "100%", height: 400, marginTop: 16 }}
+            style={{
+              width: "100%",
+              height: 800,
+              marginTop: 16,
+              border: "none",
+            }}
           />
         ) : (
           <Typography

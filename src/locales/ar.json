@@ -1,9 +1,8 @@
 {
   "page_title": "تقارير مصرف ليبيا المركزي - أداة التلخيص",
   "reports_label": "الملفات المتاحة",
-  "report_type_label": "نوع التقرير",
-  "year_label": "السنة",
-  "all": "عرض الكل",
+  "report_type_label": "اختر نوع التقرير",
+  "year_label": "اختر السنة",
   "view_button_text": "عرض",
   "summarize_button_text": "تلخيص النص",
   "summary_label": "الملخص",
@@ -11,12 +10,5 @@
   "no_files_warning": "لا يوجد ملفات متاحة لهذا النوع والسنة.",
   "load_error_message": "تعذر تحميل الملف. يرجى المحاولة مرة أخرى.",
   "loading_summary_message": "جاري تلخيص النص...",
-  "summary_success_message": "تم تلخيص التقرير بنجاح.",
-  "summary_error_message": "حدث خطأ في التلخيص",
-  "logout": "تسجيل الخروج",
-  "no_pdf_selected": "يرجى اختيار مستند",
-  "username": "إسم المستخدم",
-  "password": "كلمة المرور",
-  "login": "تسجيل الدخول",
-  "sign_in": "تسجيل الدخول"
+  "summary_success_message": "تم تلخيص التقرير بنجاح."
 }

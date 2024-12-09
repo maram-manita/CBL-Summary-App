@@ -1,69 +1,96 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import ProtectedRoute from "../components/ProtectedRoute";
+import Summary from "../components/Summary";
+import ReportsGrid from "../components/ReportsGrid";
+import Navbar from "../components/Navbar";
+import Filters from "../components/Filters";
+import PdfViewer from "../components/PdfViewer";
+import { Typography, Grid2 as Grid, Box } from "@mui/material";
+import i18n from "../i18n";
 
-const Home = ()=> {
-  const [markdownContent, setMarkdownContent] = useState("");
-  const [summary, setSummary] = useState("");
-  const [language, setLanguage] = useState("English");
+import { useTranslation } from "react-i18next";
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setMarkdownContent(event.target.result);
-      };
-      reader.readAsText(file);
+const Home = ({ handleFeedback, toggleLanguage }) => {
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedPdf, setSelectedPdf] = useState(null);
+  const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({ reportType: "", year: "" });
+
+  const { t } = useTranslation();
+  const fetchData = async () => {
+    try {
+      const response = await fetch("reports.json");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const jsonData = await response.json();
+      setData(jsonData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
+  const handleFilterChange = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const filteredData = data.filter((row) => {
+    const matchesReportType = filters.reportType
+      ? row.report_type === filters.reportType
+      : true;
+    const matchesYear = filters.year ? row.year === filters.year : true;
+    return matchesReportType && matchesYear;
+  });
 
-  const handleSummarize = async () => {
-    if (!markdownContent) {
-      alert("Please upload a Markdown file first.");
-      return;
-    }
-    try {
-      const data = await summarizeMarkdown(markdownContent, language);
-      setSummary(data.summary);
-    } catch (error) {
-      alert(error.error || "Failed to generate summary.");
-    }
+  const handleViewPdf = (pdfPath) => {
+    setSelectedPdf(pdfPath);
   };
 
   return (
-    <div>
-      <h2>Markdown Summarizer</h2>
-      <input type="file" accept=".md" onChange={handleFileUpload} />
-      <br />
-      <textarea
-        value={markdownContent}
-        readOnly
-        rows={10}
-        cols={50}
-        placeholder="Markdown content will appear here..."
-        style={{ display: "block", margin: "10px 0" }}
-      ></textarea>
-      <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-        <option value="English">English</option>
-        <option value="Arabic">Arabic</option>
-      </select>
-      <br />
-      <button onClick={handleSummarize}>Summarize</button>
-      <h2>Summary</h2>
-      <div
-        style={{
-          border: "1px solid #ccc",
-          padding: "10px",
-          background: "#f9f9f9",
-        }}
-      >
-        {summary ? (
-          <pre>{summary}</pre>
-        ) : (
-          <p>Summary will appear here...</p>
-        )}
-      </div>
-    </div>
+    <ProtectedRoute>
+      <Navbar toggleLanguage={toggleLanguage} />
+      <Box p={2}>
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            marginTop: "20px",
+            wordSpacing: "-0.1em",
+            fontSize: {
+              xs: "32px",
+              sm: "42px",
+              md: "52px",
+            },
+          }}
+        >
+          {t("page_title")}
+        </Typography>
+      </Box>
+
+      <Filters
+        handleFilterChange={handleFilterChange}
+        data={data}
+        filters={filters}
+      />
+
+      <ReportsGrid
+        filteredData={filteredData}
+        selectedFiles={selectedFiles}
+        setSelectedFiles={setSelectedFiles}
+        handleViewPdf={handleViewPdf}
+      />
+
+      <Grid container spacing={2} p={2}>
+        <Summary
+          selectedFiles={selectedFiles}
+          language={i18n.language}
+          data={data}
+          handleFeedback={handleFeedback}
+        />
+        <PdfViewer selectedPdf={selectedPdf} />
+      </Grid>
+    </ProtectedRoute>
   );
-}
+};
 
 export default Home;

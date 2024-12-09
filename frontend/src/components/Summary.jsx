@@ -38,7 +38,7 @@ const Summary = ({ selectedFiles, language, handleFeedback, data }) => {
             ${combinedText}
             `;
       }
-      console.log(selectedFiles)
+      console.log(selectedFiles);
       console.log("Prompt for summarization:", prompt);
 
       return prompt; // Return the prompt for further use
@@ -98,7 +98,7 @@ const Summary = ({ selectedFiles, language, handleFeedback, data }) => {
             onClick={fetchSummary}
             style={{ marginTop: 16 }}
             sx={{
-              backgroundColor: "#2683e8",
+              backgroundColor: "#194BFB",
               padding: "8px 12px",
               borderRadius: 2,
               color: "white",
