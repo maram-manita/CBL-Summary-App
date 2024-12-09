@@ -38,6 +38,7 @@ const Summary = ({ selectedFiles, language, handleFeedback, data }) => {
             ${combinedText}
             `;
       }
+      console.log(selectedFiles);
 
       console.log("Prompt for summarization:", prompt);
 
@@ -152,6 +153,7 @@ const Summary = ({ selectedFiles, language, handleFeedback, data }) => {
                   },
                 },
               },
+
               p: {
                 component: "p",
                 props: {
